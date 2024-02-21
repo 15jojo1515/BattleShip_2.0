@@ -1,0 +1,3 @@
+public enum Ship {
+    CARRIER, BATTLESHIP, CRUISER, SUBMARINE, PATROL_BOAT
+}
