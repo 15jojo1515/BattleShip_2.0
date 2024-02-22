@@ -195,7 +195,7 @@ public class Run {
                     player.drawBoard(graphics, playerBoardX, playerBoardY, boardDim);
                     player.drawShips(boardDim, graphics, false);
                     player2.drawBoard(graphics, opponentBoardX, opponentBoardY, boardDim);
-//                    player2.drawShips(boardDim,graphics,true);  //to make opponents ships visible for testing
+                    player2.drawShips(boardDim,graphics,true);  //to make opponents ships visible for testing
 
                     player.drawHoveringAttack(MouseInfo.getPointerInfo().getLocation(), graphics, boardDim);
                     if (clicked[0]) {

@@ -27,6 +27,10 @@ public class Player{
     private Image redX;
     public boolean loading = true;
     private Clip missSound;
+    private Clip hitSound;
+    private Clip sunkSound;
+    private Clip winSound;
+    private Clip lossSound;
 
     public boolean isTurn() {
         return turn;
@@ -39,6 +43,7 @@ public class Player{
         if (bot){
             placeBoatsBot(dimension);
         }
+
         // load images
         String dir = Paths.get("").toAbsolutePath().normalize().toString();
         try{
@@ -48,14 +53,23 @@ public class Player{
             throw new RuntimeException(e);
         }
 
-
         grayX = grayX.getScaledInstance(dimension.width/10-5,dimension.height/10-7,Image.SCALE_DEFAULT);
         redX = redX.getScaledInstance(dimension.width/10-5,dimension.height/10-5,Image.SCALE_DEFAULT);
 
+        // load sounds
         try {
-            AudioInputStream missSoundStream = AudioSystem.getAudioInputStream(new File(dir+"\\assets\\missSound.wav"));
+            // miss Sound
             missSound = AudioSystem.getClip();
-            missSound.open(missSoundStream);
+            missSound.open(AudioSystem.getAudioInputStream(new File(dir+"\\assets\\missSound.wav")));
+            // hit Sound
+            hitSound = AudioSystem.getClip();
+            hitSound.open(AudioSystem.getAudioInputStream(new File(dir+"\\assets\\hitSound.wav")));
+            // sink Sound
+            sunkSound = AudioSystem.getClip();
+            // win Sound
+            winSound = AudioSystem.getClip();
+            // loss Sound
+            lossSound = AudioSystem.getClip();
         } catch (Exception ignored){}
         loading = false;
     }
@@ -320,10 +334,17 @@ public class Player{
                 hits.add(point);
                 turn = false;
                 player.turn = true;
+                // play sound
+                System.out.println(hitSound.isRunning()+" "+hitSound.getFramePosition());
+                hitSound.setFramePosition(0);
+                hitSound.start();
+                System.out.println(hitSound.isRunning()+" "+hitSound.getFramePosition());
             }else if (!(misses.contains(point))&&!(hits.contains(point))){
                 misses.add(point);
                 turn = false;
                 player.turn = true;
+                // play sound
+                missSound.setFramePosition(0);
                 missSound.start();
             }
 
