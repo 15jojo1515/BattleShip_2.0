@@ -1,9 +1,11 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,6 +26,7 @@ public class Player{
     private Image grayX;
     private Image redX;
     public boolean loading = true;
+    private Clip missSound;
 
     public boolean isTurn() {
         return turn;
@@ -49,6 +52,11 @@ public class Player{
         grayX = grayX.getScaledInstance(dimension.width/10-5,dimension.height/10-7,Image.SCALE_DEFAULT);
         redX = redX.getScaledInstance(dimension.width/10-5,dimension.height/10-5,Image.SCALE_DEFAULT);
 
+        try {
+            AudioInputStream missSoundStream = AudioSystem.getAudioInputStream(new File(dir+"\\assets\\missSound.wav"));
+            missSound = AudioSystem.getClip();
+            missSound.open(missSoundStream);
+        } catch (Exception ignored){}
         loading = false;
     }
 
@@ -316,6 +324,7 @@ public class Player{
                 misses.add(point);
                 turn = false;
                 player.turn = true;
+                missSound.start();
             }
 
             if (containsAllHit(player.carrier.getPoints())){
@@ -466,5 +475,6 @@ public class Player{
         graphics.setColor(Color.black);
         graphics.drawString("X",1584,7);
     }
+
 
 }
