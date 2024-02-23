@@ -2,12 +2,14 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Player{
     private Carrier carrier;
@@ -335,15 +337,15 @@ public class Player{
                 turn = false;
                 player.turn = true;
                 // play sound
-                System.out.println(hitSound.isRunning()+" "+hitSound.getFramePosition());
+                hitSound.flush();
                 hitSound.setFramePosition(0);
                 hitSound.start();
-                System.out.println(hitSound.isRunning()+" "+hitSound.getFramePosition());
             }else if (!(misses.contains(point))&&!(hits.contains(point))){
                 misses.add(point);
                 turn = false;
                 player.turn = true;
                 // play sound
+                missSound.flush();
                 missSound.setFramePosition(0);
                 missSound.start();
             }
