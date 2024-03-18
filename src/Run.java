@@ -21,12 +21,12 @@ public class Run {
     private static boolean[] clicked = {false};
     private static Direction[] direction = {Direction.EAST};
     private static JFrame frame;
-
+    
     public static void main(String[] args) {
-
+        
         boolean[] clicked = {false};
         Direction[] direction = {Direction.EAST};
-
+        
         frame = new JFrame("Battle Ship");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(WIDTH, HEIGHT);
@@ -34,13 +34,13 @@ public class Run {
         frame.setUndecorated(true);
         frame.setVisible(true);
         frame.setResizable(false);
-
+        
         canvas.setSize(WIDTH, HEIGHT);
-        canvas.setBackground(new Color(0,0,153));
+        canvas.setBackground(new Color(0, 0, 153));
         canvas.setVisible(true);
         frame.add(canvas);
         canvas.createBufferStrategy(3);
-
+        
         MouseListener mouseListener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -48,29 +48,29 @@ public class Run {
                     clicked[0] = true;
                 }
             }
-
+            
             @Override
             public void mousePressed(MouseEvent e) {
-
+            
             }
-
+            
             @Override
             public void mouseReleased(MouseEvent e) {
-
+            
             }
-
+            
             @Override
             public void mouseEntered(MouseEvent e) {
-
+            
             }
-
+            
             @Override
             public void mouseExited(MouseEvent e) {
-
+            
             }
         };
         canvas.addMouseListener(mouseListener);
-
+        
         MouseWheelListener mouseWheelListener = new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -98,7 +98,7 @@ public class Run {
             }
         };
         canvas.addMouseWheelListener(mouseWheelListener);
-
+        
         KeyListener keyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -114,23 +114,23 @@ public class Run {
                     }
                 }
             }
-
+            
             @Override
             public void keyPressed(KeyEvent e) {
-
+            
             }
-
+            
             @Override
             public void keyReleased(KeyEvent e) {
-
+            
             }
         };
         canvas.addKeyListener(keyListener);
-
+        
         Cursor cursor = new Cursor(Cursor.CROSSHAIR_CURSOR);
         frame.setCursor(cursor);
         Player player2;
-
+        
         // main run
         while (true) {
             Dimension boardDim = new Dimension(700, 700);
@@ -138,13 +138,13 @@ public class Run {
             Player.drawLoading(graphics);
             Player player = new Player(false, true, true, boardDim);
             playerBoardX = 450;
-
-
+            
+            
             //main menu
             while (player.inMenu) {
                 startFPS();
                 startGraphics();
-
+                
                 Player.drawExitButton(graphics);
                 player.drawReadyButton(graphics, 650, 450);
                 if (clicked[0]) {
@@ -158,19 +158,19 @@ public class Run {
                     }
                     clicked[0] = false;
                 }
-
+                
                 endFPS();
                 endGraphics();
             }
             player2 = new Player(true, false, false, boardDim);
-
+            
             // start and playing game
             while (!(player.isWin() || player2.isWin())) {
                 //start frame
                 startFPS();
                 startGraphics();
                 //
-
+                
                 Player.drawExitButton(graphics);
                 if (!(player.isReady())) {
                     player.drawBoard(graphics, playerBoardX, playerBoardY, boardDim);
@@ -183,20 +183,20 @@ public class Run {
                         if ((x > 1575) && (x <= 1600) && (y >= 0) && (y < 10)) {
                             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
                         }
-
+                        
                         clicked[0] = false;
                     }
                     player.drawRemainingShips(boardDim, graphics);
                     player.drawShipMouse(MouseInfo.getPointerInfo().getLocation(), direction[0], graphics, boardDim);
                     player.drawShips(boardDim, graphics, false);
                     player.placedAll();
-
+                    
                 } else if (player.isReady() && !((player.isWin()) || (player2.isWin()))) {
                     player.drawBoard(graphics, playerBoardX, playerBoardY, boardDim);
                     player.drawShips(boardDim, graphics, false);
                     player2.drawBoard(graphics, opponentBoardX, opponentBoardY, boardDim);
 //                    player2.drawShips(boardDim,graphics,true);  //to make opponents ships visible for testing
-
+                    
                     player.drawHoveringAttack(MouseInfo.getPointerInfo().getLocation(), graphics, boardDim);
                     if (clicked[0]) {
                         // attack
@@ -209,7 +209,7 @@ public class Run {
                         if ((x > 1575) && (x <= 1600) && (y >= 0) && (y < 10)) {
                             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
                         }
-
+                        
                         clicked[0] = false;
                         player.calcWin(player2);
                     }
@@ -221,19 +221,19 @@ public class Run {
                     player.drawattacks(graphics, boardDim, true);
                     player2.drawattacks(graphics, boardDim, false);
                 }
-
+                
                 //end frame
                 endFPS();
                 endGraphics();
             }
-
+            
             // win loss menu
             while ((player.isWin() || player2.isWin())) {
                 startFPS();
                 startGraphics();
-
+                
                 Player.drawExitButton(graphics);
-                if (player.isWin()){
+                if (player.isWin()) {
                     Player.drawWin(graphics);
                     if (clicked[0]) {
                         double x = MouseInfo.getPointerInfo().getLocation().getX();
@@ -246,8 +246,7 @@ public class Run {
                         }
                         clicked[0] = false;
                     }
-                }
-                else {
+                } else {
                     Player.drawLoss(graphics);
                     if (clicked[0]) {
                         double x = MouseInfo.getPointerInfo().getLocation().getX();
@@ -261,25 +260,28 @@ public class Run {
                         clicked[0] = false;
                     }
                 }
-
+                
                 endFPS();
                 endGraphics();
             }
         }
     }
-
-    private static void startGraphics(){
+    
+    private static void startGraphics() {
         graphics = canvas.getBufferStrategy().getDrawGraphics();
         graphics.clearRect(0, 0, WIDTH, HEIGHT);
     }
-    private static void endGraphics(){
+    
+    private static void endGraphics() {
         canvas.getBufferStrategy().show();
         graphics.dispose();
     }
-    private static void startFPS(){
+    
+    private static void startFPS() {
         time = System.nanoTime();
     }
-    private static void endFPS(){
+    
+    private static void endFPS() {
         count++;
         try {
             time = 1 / (System.nanoTime() - time) * 1000000000;
